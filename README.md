@@ -1,4 +1,15 @@
-# gollive
+# Portfolio
+
+### To-do list
+```
+- [x] Variable directions
+- [x] Speed controls
+- [ ] Variable food checks - B-line for the first food in list/B-line for the closest food in viewrange/ Keep checking for closer food each frame (this could be costly)
+- [ ] Make a log for entities that logs what they're doing
+- [ ] Show cells properties when you click it (follow entity if clicked instead)
+- [ ] Show entity Viewrange and directions when clicked
+
+```
 
 ## Project setup
 ```

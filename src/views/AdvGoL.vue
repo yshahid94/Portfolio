@@ -1,14 +1,14 @@
 <template>
   <div class="home">
-    <GoLBoard :sizeX=100 :sizeY=100 />
+    <GoLBoard sizeX=50 sizeY=50 />
   </div>
 </template>
 
 <script>
-import GoLBoard from "@/components/GoL/GoLBoard.vue";
+import GoLBoard from "@/components/AdvGoL/GoLBoard.vue";
 
 export default {
-  name: "GoL",
+  name: "AdvGoL",
   components: {
     GoLBoard
   },

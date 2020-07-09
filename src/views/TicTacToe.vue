@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import TicTacToeBoard from "@/components/TicTacToeBoard.vue";
+import TicTacToeBoard from "@/components/TicTacToe/TicTacToeBoard.vue";
 
 export default {
   name: "TicTacToe",

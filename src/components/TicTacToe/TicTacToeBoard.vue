@@ -15,7 +15,7 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import TicTacToeCell from "@/components/TicTacToeCell.vue";
+import TicTacToeCell from "@/components/TicTacToe/TicTacToeCell.vue";
 @Component({
   components: {
     TicTacToeCell

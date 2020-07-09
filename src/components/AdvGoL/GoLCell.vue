@@ -1,5 +1,5 @@
 <template>
-  <div
+  <!-- <div
     class="cell"
     v-bind:style="{
       backgroundColor: color,
@@ -8,7 +8,11 @@
     }"
   >
     {{ this.name }}
-  </div>
+  </div> -->
+
+    <svg :width=width :height=height>
+        <rect :width=width :height=height :fill=color />
+    </svg>
 </template>
 
 <script lang="ts">

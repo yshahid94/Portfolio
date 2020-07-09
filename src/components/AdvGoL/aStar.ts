@@ -71,18 +71,30 @@ export class AStar {
       const x = currentNode.position![0];
       const y = currentNode.position![1];
 
+      const startX = startNode.position![0];
+      const startY = startNode.position![1];
+
+
       // Get neighbors
       //const neighbors = [[x - 1, y], [x + 1, y], [x, y - 1], [x, y + 1]];
-      const neighbors: Array<[number, number]> = [
-        [x - 1, y - 1],
-        [x - 1, y],
-        [x - 1, y + 1],
-        [x, y + 1],
-        [x + 1, y + 1],
-        [x + 1, y],
-        [x + 1, y - 1],
-        [x, y - 1]
-      ];
+    //   const neighbors2: Array<[number, number]> = [
+    //     [x - 1, y - 1],
+    //     [x - 1, y],
+    //     [x - 1, y + 1],
+    //     [x, y + 1],
+    //     [x + 1, y + 1],
+    //     [x + 1, y],
+    //     [x + 1, y - 1],
+    //     [x, y - 1]
+    //   ];
+
+      const neighbors: Array<[number, number]> = board2d[startX][startY].inRangeCellsPositions(x, y);
+
+    //   if(neighbors.length != neighbors2.length || neighbors[0][0] != neighbors2[0][0] )
+    //   {
+    //       console.log("sumting wong");
+    //   }
+
 
       for (const node of neighbors) {
         //neighbors.forEach(node => { // Adjacent squares
@@ -100,7 +112,6 @@ export class AStar {
         // Make sure terrain is passable
         if (
           !(
-            board2d[node[0]][node[1]] == null ||
             board2d[node[0]][node[1]].passable == "Yes"
           )
         ) {
@@ -138,7 +149,7 @@ export class AStar {
         // Child is already in the open list
         let add = true;
         for (const openNode of openSet) {
-          if (newNode == openNode && newNode.f >= openNode.f) {
+          if (newNode.equalTo(openNode) && newNode.f >= openNode.f) {
             add = false;
             break;
           }
