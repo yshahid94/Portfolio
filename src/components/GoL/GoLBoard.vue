@@ -74,18 +74,8 @@
 
 <script lang="ts">
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
-import GoLCell from "./GoLCell.vue";
-// import GoLFood from "./GoLFood.vue";
-// import GoLEntity from "./GoLEntity.vue";
-import { GoLEntity, GoLWall, GoLFood, GoLEmpty, Direction } from "./CellTypes";
-import { AStar } from "./aStar";
 import { interval } from "rxjs";
 
-@Component({
-  components: {
-    GoLCell
-  }
-})
 export default class GoLBoard extends Vue {
   //private map: Array<object>;
   private map: Array<any[]> = [];
@@ -344,7 +334,7 @@ export default class GoLBoard extends Vue {
 
     this.map = map2;
 
-    this.frame++;
+    //this.frame++;
   }
 
   public getPositionFromXandY(y: number, x: number) {
