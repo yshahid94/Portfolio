@@ -6,8 +6,8 @@
           <!-- <label for="checkbox">{{ running ? "Running" : "Stopped" }}</label>
           <input type="checkbox" id="checkbox" v-model="running" /> -->
           <!-- <input type="button" @click="stepBack()" value="<||" /> -->
-          <input type="button" @click="stepOnce()" value="||>" />
-          <input type="button" @click="toggleRunning()" :value="running ? '||' : '>'" />
+          <button type="button" class="btn step" @click="stepOnce()"></button>
+          <button type="button" @click="toggleRunning()" :class="running ? 'btn pause' : 'btn play'"></button>
           <!-- <p>Frame: {{ frame }}</p> -->
           <!-- <p>test: {{ test }}</p> -->
           <!-- <div class="row" :key="index" v-for="(entity, index) in entities">
@@ -73,8 +73,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue, Watch } from "vue-property-decorator";
-import { interval } from "rxjs";
+import { Prop, Vue, Watch } from "vue-property-decorator";
 
 export default class GoLBoard extends Vue {
   //private map: Array<object>;
@@ -103,9 +102,9 @@ export default class GoLBoard extends Vue {
       };
   }
   mounted() {
-    this.map = this.setupBoard(this.sizeY, this.sizeX);
     const canvas: any = this.$refs.canvas;
     this.ctx = canvas.getContext('2d');
+    this.map = this.setupBoard(this.sizeY, this.sizeX);
     
     requestAnimationFrame(this.evolve);
     
@@ -231,8 +230,8 @@ export default class GoLBoard extends Vue {
 
     if(this.running)
     {
-      requestAnimationFrame(this.evolve);
       this.stepBoard();
+      requestAnimationFrame(this.evolve);
     }
   }
 
@@ -380,4 +379,20 @@ export default class GoLBoard extends Vue {
 }
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped></style>
+<style scoped>
+.btn.step:after {
+	content: '\f051';
+	font-family: FontAwesome;
+	padding-left: 10px;
+}
+.btn.play:after {
+	content: '\f04b';
+	font-family: FontAwesome;
+	padding-left: 10px;
+}
+.btn.pause:after {
+	content: '\f04c';
+	font-family: FontAwesome;
+	padding-left: 10px;
+}
+</style>

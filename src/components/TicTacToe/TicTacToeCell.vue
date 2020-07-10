@@ -3,7 +3,7 @@
     class="cell"
     :style="{ width: width + 'px', height: height + 'px' }"
     @click="cellClicked"
-  ></div>
+  ><span v-if="value !== ''">{{ value }}</span></div>
 </template>
 
 <script lang="ts">
@@ -12,15 +12,21 @@ import { Component, Vue, Prop } from "vue-property-decorator";
 export default class TicTacToeCell extends Vue {
   @Prop() height!: number;
   @Prop() width!: number;
-  @Prop() id!: number;
+  @Prop() value!: string;
   cellClicked() {
-    this.$emit("clickEmit", this.id);
+    this.$emit("clickEmit");
   }
 }
 </script>
 
 <style lang="css" scoped>
 .cell {
-  border: 2px solid black;
-}
+    width: 100px;
+    height: 100px;
+    border: 2px solid black;
+    font-size: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 </style>

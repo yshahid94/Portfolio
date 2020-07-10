@@ -1,7 +1,5 @@
 import Vue from "vue";
 import VueRouter, { RouteConfig } from "vue-router";
-import Home from "../views/Home.vue";
-import TicTacToe from "../views/TicTacToe.vue";
 
 Vue.use(VueRouter);
 
@@ -9,7 +7,11 @@ const routes: Array<RouteConfig> = [
   {
     path: "/",
     name: "Home",
-    component: Home
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () =>
+      import(/* webpackChunkName: "about" */ "../views/Home.vue")
   },
   {
     path: "/about",
@@ -39,7 +41,11 @@ const routes: Array<RouteConfig> = [
   {
     path: "/ttt",
     name: "TTT",
-    component: TicTacToe
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () =>
+      import(/* webpackChunkName: "about" */ "../views/TicTacToe.vue")
   }
 ];
 

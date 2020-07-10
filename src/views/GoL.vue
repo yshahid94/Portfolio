@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <GoLBoard :sizeX=100 :sizeY=100 />
+    <GoLBoard sizeX=50 sizeY=50 />
   </div>
 </template>
 

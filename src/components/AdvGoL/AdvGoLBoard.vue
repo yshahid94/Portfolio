@@ -5,22 +5,20 @@
         <div class="row">
           <!-- <label for="checkbox">{{ running ? "Running" : "Stopped" }}</label>
           <input type="checkbox" id="checkbox" v-model="running" /> -->
-          <input type="button" @click="stepBack()" value="<||" />
-          <input type="button" @click="stepOnce()" value="||>" />
-          <input type="button" @click="toggleRunning()" :value="running ? '||' : '>'" />
+          <!-- <input type="button" @click="stepBack()" value="<||" /> -->
+          <button type="button" class="btn" @click="stepOnce()"><i class="fa fa-step-forward"></i></button>
+          <button type="button" class="btn" @click="toggleRunning()"><i :class="running ? 'fa fa-pause' : 'fa fa-play'"></i></button>
           <!-- <p>Frame: {{ frame }}</p> -->
           <!-- <p>test: {{ test }}</p> -->
           <!-- <div class="row" :key="index" v-for="(entity, index) in entities">
               <p>Name: {{ entity.name }}</p>
               <p>Ate: {{ entity.foodAte }}</p>
           </div> -->
-          <form>
-            <div class="form-group">
+            <div style="display: flex; align-items: center;">
               <input type="range" class="form-control-range" min="0" max="100" step="1" v-model="boardSpeed">
+              <p>FPS: {{ fps }}</p>
             </div>
-          </form>
           
-          <p>FPS: {{ fps }}</p>
         </div>
       </div>
     </div>
@@ -74,7 +72,7 @@
 
 <script lang="ts">
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
-import GoLCell from "./GoLCell.vue";
+import GoLCell from "./AdvGoLCell.vue";
 // import GoLFood from "./GoLFood.vue";
 // import GoLEntity from "./GoLEntity.vue";
 import { GoLEntity, GoLWall, GoLFood, GoLEmpty, Direction } from "./CellTypes";
@@ -565,4 +563,20 @@ export default class GoLBoard extends Vue {
 }
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped></style>
+<style scoped>
+.btn.step:after {
+	content: '\f051';
+	font-family: FontAwesome;
+	padding-left: 10px;
+}
+.btn.play:after {
+	content: '\f04b';
+	font-family: FontAwesome;
+	padding-left: 10px;
+}
+.btn.pause:after {
+	content: '\f04c';
+	font-family: FontAwesome;
+	padding-left: 10px;
+}
+</style>

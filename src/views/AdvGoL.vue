@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import GoLBoard from "@/components/AdvGoL/GoLBoard.vue";
+import GoLBoard from "@/components/AdvGoL/AdvGoLBoard.vue";
 
 export default {
   name: "AdvGoL",
