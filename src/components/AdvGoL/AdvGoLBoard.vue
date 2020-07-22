@@ -579,4 +579,7 @@ export default class GoLBoard extends Vue {
 	font-family: FontAwesome;
 	padding-left: 10px;
 }
+.card {
+  background-color: rgb(43, 43, 43);
+}
 </style>
