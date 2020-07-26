@@ -87,7 +87,7 @@ export default class Home extends Vue {
     }
 
     const elementTarget = document.getElementById("Experiences")!;
-    const elementTarget2 = document.getElementsByClassName("exp")[0]!;
+    const elementTarget2 = document.getElementsByClassName("exp")[0]! as HTMLElement;
     if (window.scrollY > (elementTarget.offsetTop - elementTarget2.offsetHeight)) {
       app.classList.add("experience")
     } else {
