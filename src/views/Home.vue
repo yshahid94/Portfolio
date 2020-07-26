@@ -116,7 +116,7 @@ export default class Home extends Vue {
     right: 0;
     left: 0;
     z-index: 1031;
-    opacity: 80%;
+    opacity: 0.8;
     transition: 1s;
   }
 
@@ -139,11 +139,12 @@ export default class Home extends Vue {
   }
 
   .scrolled .profile-pic{
-    opacity: 0%;
+    opacity: 0;
     transition: 0.6s;
   }
 
   .profile-pic{
+    opacity: 1;
     margin: 2em auto;
     width: 150px;
     height: 150px;

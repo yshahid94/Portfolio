@@ -81,7 +81,7 @@ body {
 }
 
 .scrolled nav .profile-pic{
-  opacity: 100%;
+  opacity: 1;
   margin: 0px 2em 0px 0px;
   transition: 0.6s;
 }
@@ -94,7 +94,7 @@ nav .profile-pic {
   background-size: cover;
   border-radius: 50%;
   box-shadow: 0 0 14px 0 black;
-  opacity: 0%;
+  opacity: 0;
   transition: 0.6s;
 }
 
