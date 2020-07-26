@@ -1,6 +1,7 @@
 <template>
-  <div class="container">
-    <div class="intro">
+<div>
+  <div class="container-fluid" style="position: relative; z-index:2; margin-bottom:100px; background-color:#24252a;">
+    <div class="intro container">
       <div class="row">
         <div class="col-md-6">
           <div class="profile-pic"></div>
@@ -26,12 +27,39 @@
         </div>
       </div>
     </div>
+    <div id="Experiences">
+      <div class="exp row">
+        <div class="col-md-12" style="background-color:#343a40;">
+          <h2>Experience</h2>
+        </div>
+      </div>
+      <div class="exps row" style="background-color:#181a1b; box-shadow: inset 0 0 10px #000000;">
+        <div class="col-md-12">
+          <Timeline />
+        </div>
+      </div>
+    </div>
   </div>
+  <div style="position: fixed;bottom: 0; z-index:1; width: 100%;">
+    <div>
+      <p>
+        Contact Me:<br/>
+        yshahid94@gmail.com<br/>
+        07402628322
+      </p>
+    </div>
+  </div>
+</div>
 </template>
 
 <script lang="ts">
 import { Vue, Component } from "vue-property-decorator";
-@Component({})
+import Timeline from "@/components/Timeline.vue";
+@Component({
+  components: {
+    Timeline
+  }
+})
 export default class Home extends Vue {
   skills: string[] = [
     "C#",
@@ -46,24 +74,62 @@ export default class Home extends Vue {
     "SQL",
     "Bootstrap"
     ];
+    mounted(){
+      window.addEventListener("scroll", this.scrollHandler)
+  }
+
+  scrollHandler = function() {
+    const app = document.querySelector("#app")!;
+    if (window.pageYOffset >= 20) {
+      app.classList.add("scrolled")
+    } else {
+      app.classList.remove("scrolled");
+    }
+
+    const elementTarget = document.getElementById("Experiences")!;
+    const elementTarget2 = document.getElementsByClassName("exp")[0]!;
+    if (window.scrollY > (elementTarget.offsetTop - elementTarget2.offsetHeight)) {
+      app.classList.add("experience")
+    } else {
+      app.classList.remove("experience");
+    }
+  }
+
+  destroyed()
+  {
+    window.removeEventListener("scroll", this.scrollHandler);
+  }
 }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-  .content-skills li {
-    list-style: none;
-    flex-grow: 1;
-    justify-content: center;
-    background-color: rgb(32, 32, 32);
-    padding: 6px 10px;
-    margin: 2px 2px;
-    box-shadow: 1px 1px 5px #000;
+  @media (min-width: 2000px) {
+    .container {
+      max-width: 1920px; 
+    }
   }
-  .content-skills {
-    display: flex;
-    flex-wrap: wrap;
+    
+  .experience .exp {
+    position: fixed;
+    top: 60px;
+    right: 0;
+    left: 0;
+    z-index: 1031;
+    opacity: 80%;
+    transition: 1s;
   }
+
+  .exp h2 {
+    margin: 0.5em;
+    transition: 1s;
+  }
+
+  .experience .exp h2 {
+    margin: 0.25em;
+    transition: 1s;
+  }
+
   .profile-tag {
     justify-content: center;
     background-color: rgb(32, 32, 32);
@@ -71,6 +137,12 @@ export default class Home extends Vue {
     margin: 10px auto;
     box-shadow: 1px 1px 5px #000;
   }
+
+  .scrolled .profile-pic{
+    opacity: 0%;
+    transition: 0.6s;
+  }
+
   .profile-pic{
     margin: 2em auto;
     width: 150px;
@@ -79,9 +151,11 @@ export default class Home extends Vue {
     background-size: cover;
     border-radius: 50%;
     box-shadow: 0 0 14px 0 black;
-  }
-  .intro .col-md-6{
-    margin: 5em 0;
+    transition: 0.6s;
   }
 
+  .intro .col-md-6{
+    margin: auto 0;
+    padding: 3em 0;
+  }
 </style>
