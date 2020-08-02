@@ -44,9 +44,8 @@ import { Vue, Component } from "vue-property-decorator";
 @Component({})
 export default class App extends Vue {
   currentPage() {
-        return this.$route.path;
-    }
-
+    return this.$route.path;
+  }
 }
 </script>
 

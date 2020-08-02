@@ -1,7 +1,7 @@
 <template>
   <div
     class="cell"
-    :style="{ width: width + 'px', height: height + 'px' }"
+    
     @click="cellClicked"
   ><span v-if="value !== ''">{{ value }}</span></div>
 </template>
@@ -21,12 +21,16 @@ export default class TicTacToeCell extends Vue {
 
 <style lang="css" scoped>
 .cell {
-    width: 100px;
-    height: 100px;
+    width: 33.3%;
+    height: auto;
     border: 2px solid black;
     font-size: 42px;
     display: flex;
     align-items: center;
     justify-content: center;
   }
+.cell:before {
+    content:"";
+    padding-top: 100%;
+}
 </style>

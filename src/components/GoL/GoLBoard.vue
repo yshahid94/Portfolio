@@ -6,9 +6,9 @@
           <!-- <label for="checkbox">{{ running ? "Running" : "Stopped" }}</label>
           <input type="checkbox" id="checkbox" v-model="running" /> -->
           <!-- <input type="button" @click="stepBack()" value="<||" /> -->
-          <button type="button" class="btn step" @click="stepOnce()"></button>
-          <button type="button" @click="toggleRunning()" :class="running ? 'btn pause' : 'btn play'"></button>
-          <!-- <p>Frame: {{ frame }}</p> -->
+          <button type="button" class="btn" @click="stepOnce()"><i class="fa fa-step-forward"></i></button>
+          <button type="button" class="btn" @click="toggleRunning()"><i :class="running ? 'fa fa-pause' : 'fa fa-play'"></i></button>
+          <p>Frame: {{ frame }}</p>
           <!-- <p>test: {{ test }}</p> -->
           <!-- <div class="row" :key="index" v-for="(entity, index) in entities">
               <p>Name: {{ entity.name }}</p>
@@ -79,8 +79,8 @@ export default class GoLBoard extends Vue {
   //private map: Array<object>;
   private map: Array<any[]> = [];
   private size = 10;
-  private running = true;
-  //private frame = 0;
+  private running = false;
+  private frame = 0;
   // private test = 0;
   private ctx?: CanvasRenderingContext2D = undefined;
   // private maxNumberOfFood = 10;
@@ -97,7 +97,7 @@ export default class GoLBoard extends Vue {
   private currentPostMatchedFrames = 0
   private postMatchedFrames = 5
   beforeDestroy() {
-      this.evolve = () => {
+      this.evolve = function() {
           //Do nothing
       };
   }
@@ -108,28 +108,6 @@ export default class GoLBoard extends Vue {
     
     requestAnimationFrame(this.evolve);
     
-    // interval(1).subscribe(val => {
-    //   //this.test++;
-    //   if (this.running) {
-    //     //     for (let i = 0; i < 5; i++) {
-    //     this.stepBoard();
-    //     //     }
-    //   }
-    // });
-
-    // window.requestAnimationFrame(() => {
-    //   if (this.running) {
-    //     this.stepBoard(timestamp);
-    //   }
-    // });
-
-    // while(true)
-    // {
-    //     if(this.running)
-    //     {
-    //         this.stepBoard()
-    //     }
-    // }
   }
   //   @Watch("sizeX")
   //   sizeXChanged(val: number, oldVal: number) {
@@ -180,7 +158,7 @@ export default class GoLBoard extends Vue {
   //   }
 
   public stepOnce(){
-    // this.stepBoard();
+    this.stepBoard();
     this.running = false;
     requestAnimationFrame(this.evolve);
   }
@@ -202,31 +180,7 @@ export default class GoLBoard extends Vue {
     requestAnimationFrame(this.evolve);
   }
 
-  public evolve(now: number){
-    // const t0 = performance.now();
-    // const { lastEvolveTime } = this;
-    
-    // this.fps = Math.trunc(1/((Math.trunc(now) - Math.trunc(this.lastEvolveTime))/1000));
-    
-
-    // if((!lastEvolveTime || now - lastEvolveTime >= 500/this.boardSpeed))
-    // {
-    //   this.timeBetweenFrames.push((Math.trunc(now) - Math.trunc(this.lastEvolveTime)));
-
-    //   if(this.timeBetweenFrames.length > 10)
-    //   {
-    //     const last10FrameTimes: number[] = this.timeBetweenFrames.slice(this.timeBetweenFrames.length - 10);
-    //     let frameTime = 0;
-    //     for (let index = 0; index < last10FrameTimes.length; index++) {
-    //       frameTime += last10FrameTimes[index];
-    //     }
-    //     this.fps = Math.trunc(1/((frameTime/10)/1000));
-    //   }
-
-      
-    //   this.lastEvolveTime = now;
-    //   this.stepBoard();
-    // }
+  public evolve (now: number){
 
     if(this.running)
     {
@@ -333,7 +287,7 @@ export default class GoLBoard extends Vue {
 
     this.map = map2;
 
-    //this.frame++;
+    this.frame++;
   }
 
   public getPositionFromXandY(y: number, x: number) {

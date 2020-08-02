@@ -1,15 +1,5 @@
 <template>
   <div class="container">
-    <!-- <input v-model="height" />
-    <input v-model="width" />
-    <TicTacToeCell
-      v-for="cell in noOfCells"
-      :key="cell"
-      :height="height"
-      :width="width"
-      :id="cell"
-      @clickEmit="childClicked"
-    /> -->
     <div class="row">
       {{ status }}
     </div>
@@ -17,7 +7,18 @@
       Current player: {{ currentPlayer }}
     </div>
     
-    <div class="row">
+    <div style="max-width:800px; padding: 0px 100px">
+      <div class="row" v-for="(n, i) in 3" :key=n>
+        <TicTacToeCell v-for="(n, j) in 3"
+        :key=n
+        :value="board[i][j]"
+        :height="height"
+        :width="width"
+        @clickEmit="childClicked(i, j)"/>
+      </div>
+    </div>
+
+    <!-- <div class="row">
       <div class="board">
         <div v-for="(n, i) in 3" :key=n>
           <div v-for="(n, j) in 3" :key=n>
@@ -29,7 +30,8 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
+
   </div>
 </template>
 
@@ -78,8 +80,8 @@ export default class TicTacToeBoard extends Vue {
           ['', '', ''],
           ['', '', '']];
   currentPlayer = 'x';
-  height = 50;
-  width = 50;
+  height = 150;
+  width = 150;
   status = 'Playing first game';
   playerHasTicTacToe(player: string) {
     // Horizontal rows
@@ -100,7 +102,7 @@ export default class TicTacToeBoard extends Vue {
     if (this.board[0][0] === player && this.board[1][1] === player && this.board[2][2] === player) {
       return true;
     }
-    if (this.board[1][0] === player && this.board[1][1] === player && this.board[0][2] === player) {
+    if (this.board[2][0] === player && this.board[1][1] === player && this.board[0][2] === player) {
       return true;
     }
     return false;
@@ -122,7 +124,7 @@ export default class TicTacToeBoard extends Vue {
   .board {
     display: flex;
     flex-wrap: wrap;
-    width: 300px;
-    height: 300px;
+    /* width: 300px;
+    height: 300px; */
   }
 </style>

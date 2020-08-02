@@ -58,12 +58,13 @@ export default class Timeline extends Vue {
             Skills: [
                     "C#",
                     "SQL",
-                    "Webforms",
                     "MVC",
+                    "SOAP APIs",
                     "TFS",
                     "ASP.Net",
                     "Javascript",
                     "jQuery",
+                    "Webforms",
                     "CSS",
                     "Bootstrap"
                     ]

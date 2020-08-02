@@ -19,7 +19,7 @@
           </div>
         </div>
         <div class="col-md-6">
-          <h4>Software developer with 4+ years of professional software development</h4>
+          <h4>Software developer with 4+ years of professional software development experience</h4>
           <ul class="content-skills">
             <li v-for="skill in skills" :key="skill"> {{ skill }}
             </li>
@@ -87,8 +87,8 @@ export default class Home extends Vue {
     }
 
     const elementTarget = document.getElementById("Experiences")!;
-    const elementTarget2 = document.getElementsByClassName("exp")[0]! as HTMLElement;
-    if (window.scrollY > (elementTarget.offsetTop - elementTarget2.offsetHeight)) {
+    //const elementTarget2 = document.getElementsByClassName("exp")[0]! as HTMLElement;
+    if (window.scrollY > (elementTarget.offsetTop)) {
       app.classList.add("experience")
     } else {
       app.classList.remove("experience");
