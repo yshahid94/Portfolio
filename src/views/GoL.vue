@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <GoLBoard sizeX=50 sizeY=50 />
+    <GoLBoard :sizeX="50" :sizeY="50" />
   </div>
 </template>
 
@@ -10,16 +10,16 @@ import GoLBoard from "@/components/GoL/GoLBoard.vue";
 export default {
   name: "GoL",
   components: {
-    GoLBoard
+    GoLBoard,
   },
   props: {
-    msg: String
+    msg: String,
   },
   methods: {
     test() {
       return "hi";
-    }
-  }
+    },
+  },
 };
 </script>
 

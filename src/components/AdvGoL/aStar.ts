@@ -24,7 +24,11 @@ export class Node {
 }
 
 export class AStar {
-  public static run(board2d: Array<any[]>, start: [number, number], end: [number, number]): Array<[number, number]> {
+  public static run(
+    board2d: Array<any[]>,
+    start: [number, number],
+    end: [number, number]
+  ): Array<[number, number]> {
     const startNode = new Node(undefined, start);
     startNode.g = startNode.h = startNode.f = 0;
     const endNode = new Node(undefined, end);
@@ -74,27 +78,27 @@ export class AStar {
       const startX = startNode.position![0];
       const startY = startNode.position![1];
 
-
       // Get neighbors
       //const neighbors = [[x - 1, y], [x + 1, y], [x, y - 1], [x, y + 1]];
-    //   const neighbors2: Array<[number, number]> = [
-    //     [x - 1, y - 1],
-    //     [x - 1, y],
-    //     [x - 1, y + 1],
-    //     [x, y + 1],
-    //     [x + 1, y + 1],
-    //     [x + 1, y],
-    //     [x + 1, y - 1],
-    //     [x, y - 1]
-    //   ];
+      //   const neighbors2: Array<[number, number]> = [
+      //     [x - 1, y - 1],
+      //     [x - 1, y],
+      //     [x - 1, y + 1],
+      //     [x, y + 1],
+      //     [x + 1, y + 1],
+      //     [x + 1, y],
+      //     [x + 1, y - 1],
+      //     [x, y - 1]
+      //   ];
 
-      const neighbors: Array<[number, number]> = board2d[startX][startY].inRangeCellsPositions(x, y);
+      const neighbors: Array<[number, number]> = board2d[startX][
+        startY
+      ].inRangeCellsPositions(x, y);
 
-    //   if(neighbors.length != neighbors2.length || neighbors[0][0] != neighbors2[0][0] )
-    //   {
-    //       console.log("sumting wong");
-    //   }
-
+      //   if(neighbors.length != neighbors2.length || neighbors[0][0] != neighbors2[0][0] )
+      //   {
+      //       console.log("sumting wong");
+      //   }
 
       for (const node of neighbors) {
         //neighbors.forEach(node => { // Adjacent squares
@@ -110,11 +114,7 @@ export class AStar {
         }
 
         // Make sure terrain is passable
-        if (
-          !(
-            board2d[node[0]][node[1]].passable == "Yes"
-          )
-        ) {
+        if (!(board2d[node[0]][node[1]].passable == "Yes")) {
           continue;
         }
         // if (!((node[0] > (board2d.length - 1) || node[0] < 0 || node[1] > (board2d[board2d.length-1].length -1) || node[1] < 0) || (!(board2d[node[0]][node[1]] == null || board2d[node[0]][node[1]].passable == "Yes"))))
@@ -126,7 +126,7 @@ export class AStar {
         // Append
         if (
           closedSet.some(
-            closedNode =>
+            (closedNode) =>
               closedNode.position![0] == newNode.position![0] &&
               closedNode.position![1] == newNode.position![1]
           )

@@ -1,14 +1,37 @@
 <template>
   <div class="container">
-    <div class="card">
-      <div class="card-body">
-        <div class="row">
+    <div class="row">
+      <div class="card bg-dark text-white">
+        <div class="card-body">
+          <!-- <div class="col-md-5"></div> -->
           <!-- <label for="checkbox">{{ running ? "Running" : "Stopped" }}</label>
           <input type="checkbox" id="checkbox" v-model="running" /> -->
           <!-- <input type="button" @click="stepBack()" value="<||" /> -->
-          <button type="button" class="btn" @click="stepOnce()"><i class="fa fa-step-forward"></i></button>
-          <button type="button" class="btn" @click="toggleRunning()"><i :class="running ? 'fa fa-pause' : 'fa fa-play'"></i></button>
+          <button type="button" class="btn" @click="stepOnce()">
+            <i class="fa fa-step-forward"></i>
+          </button>
+          <button type="button" class="btn" @click="toggleRunning()">
+            <i :class="running ? 'fa fa-pause' : 'fa fa-play'"></i>
+          </button>
+
+          <label for="boardSpeed">Speed:</label>
+          <input
+            type="range"
+            id="boardSpeed"
+            class="form-control-range"
+            min="0"
+            max="100"
+            step="1"
+            v-model="boardSpeed"
+          />
+
           <p>Frame: {{ frame }}</p>
+          <label for="autoRandom">Auto Randomise on match:</label>
+          <input
+            type="checkbox"
+            id="autoRandom"
+            v-model="autoRandomiseOnMatch"
+          />
           <!-- <p>test: {{ test }}</p> -->
           <!-- <div class="row" :key="index" v-for="(entity, index) in entities">
               <p>Name: {{ entity.name }}</p>
@@ -23,11 +46,10 @@
           <p>FPS: {{ fps }}</p> -->
         </div>
       </div>
-    </div>
-    
-    <div class="card">
-      <div class="card-body">
-        <!-- <div class="row" v-bind:key="'row' + index" v-for="(row, index) in map">
+
+      <div class="card bg-dark">
+        <div class="card-body">
+          <!-- <div class="row" v-bind:key="'row' + index" v-for="(row, index) in map">
           <div
             class="cell"
             v-bind:key="'cell' + index"
@@ -35,8 +57,8 @@
           >
             <div class="cell-contents" >
                     </div> -->
-            <!-- <GoLCell v-bind:type=cell.type v-bind:color=cell.color v-bind:name=cell.name /> -->
-            <!-- <component :is="cell"></component>
+          <!-- <GoLCell v-bind:type=cell.type v-bind:color=cell.color v-bind:name=cell.name /> -->
+          <!-- <component :is="cell"></component>
             <GoLCell
               :type="cell.type"
               :color="cell.color"
@@ -47,7 +69,7 @@
             />
           </div>
         </div> -->
-        <!-- <svg :width=size*sizeX :height=size*sizeY>
+          <!-- <svg :width=size*sizeX :height=size*sizeY>
             <g v-for="(row, rowIndex) in map" :key="'row' + rowIndex">
                 <rect
                     v-for="(cell, cellIndex) in row"
@@ -61,53 +83,134 @@
             </g>
         </svg> -->
 
-        <canvas
+          <canvas
             ref="canvas"
-            :width=widthDim
-            :height=heightDim
-        />
+            :width="widthDim"
+            :height="heightDim"
+            @mousemove="draw"
+            @mousedown="beginDrawing"
+            @mouseup="stopDrawing"
+            @mouseleave="stopDrawing"
+          />
+        </div>
       </div>
     </div>
-
   </div>
 </template>
 
 <script lang="ts">
-import { Prop, Vue, Watch } from "vue-property-decorator";
+import { Prop, Vue, Watch, Component } from "vue-property-decorator";
 
+@Component({
+  components: {},
+})
 export default class GoLBoard extends Vue {
   //private map: Array<object>;
   private map: Array<any[]> = [];
   private size = 10;
-  private running = false;
+  private running = true;
   private frame = 0;
-  // private test = 0;
   private ctx?: CanvasRenderingContext2D = undefined;
-  // private maxNumberOfFood = 10;
   private lastEvolveTime = 0;
-  private boardSpeed = 60;
+  private boardSpeed = 5;
   // private fps = 0;
   // private timeBetweenFrames: number[] = [];
   @Prop() private sizeX!: number;
   @Prop() private sizeY!: number;
-  private widthDim = this.size*this.sizeX;
-  private heightDim = this.size*this.sizeY;
+  private borderWidth = 5;
+  private widthDim = this.size * this.sizeX + this.borderWidth * 2;
+  private heightDim = this.size * this.sizeY + this.borderWidth * 2;
   private mapHistory: Array<Array<any[]>> = [];
   private matched = false;
-  private currentPostMatchedFrames = 0
-  private postMatchedFrames = 5
+  private currentPostMatchedFrames = 0;
+  private postMatchedFrames = 5;
+  private autoRandomiseOnMatch = true;
+  private isDrawing = false;
+  private brush = true;
   beforeDestroy() {
-      this.evolve = function() {
-          //Do nothing
-      };
+    this.evolve = () => {
+      //Do nothing
+    };
   }
   mounted() {
     const canvas: any = this.$refs.canvas;
-    this.ctx = canvas.getContext('2d');
+    this.ctx = canvas.getContext("2d");
     this.map = this.setupBoard(this.sizeY, this.sizeX);
-    
+
+    // // Add the event listeners for mousedown, mousemove, and mouseup
+    // this.ctx!.canvas.addEventListener("mousedown", (e) => {
+    //   // x = e.offsetX;
+    //   // y = e.offsetY;
+    //   this.isDrawing = true;
+    // });
+
+    // this.ctx!.canvas.addEventListener("mousemove", (e) => {
+    //   if (this.isDrawing === true) {
+    //     const x = Math.trunc((e.offsetX - this.borderWidth) / this.size);
+    //     const y = Math.trunc((e.offsetY - this.borderWidth) / this.size);
+    //     console.log(x + " - " + y);
+    //     const map2 = this.map;
+    //     map2[y][x] = true;
+    //     this.map = map2;
+    //   }
+    // });
+
+    // window.addEventListener("mouseup", (e) => {
+    //   if (this.isDrawing === true) {
+    //     // drawLine(context, x, y, e.offsetX, e.offsetY);
+    //     // x = 0;
+    //     // y = 0;
+    //     this.isDrawing = false;
+    //   }
+    // });
+
     requestAnimationFrame(this.evolve);
-    
+  }
+
+  public makeDeepClone(map: Array<any[]>): Array<any[]> {
+    const map2: Array<any[]> = [];
+
+    for (let indexY = 0; indexY < this.map.length; indexY++) {
+      const row = this.map[indexY];
+      const newRow = [];
+      for (let indexX = 0; indexX < row.length; indexX++) {
+        const cell = row[indexX];
+        const alive = this.getNumberOfAliveFromXandY(indexY, indexX);
+        if (cell) {
+          newRow.push(true);
+        } else {
+          newRow.push(false);
+        }
+      }
+      map2.push(newRow);
+    }
+
+    return map2;
+  }
+
+  public draw(e: MouseEvent) {
+    if (this.isDrawing === true) {
+      const x = Math.trunc((e.offsetX - this.borderWidth) / this.size);
+      const y = Math.trunc((e.offsetY - this.borderWidth) / this.size);
+
+      const map2: Array<any[]> = this.makeDeepClone(this.map);
+
+      map2[y][x] = true;
+      this.map = map2;
+    }
+  }
+
+  public beginDrawing(e: MouseEvent) {
+    this.isDrawing = true;
+  }
+
+  public stopDrawing(e: MouseEvent) {
+    if (this.isDrawing === true) {
+      // drawLine(context, x, y, e.offsetX, e.offsetY);
+      // x = 0;
+      // y = 0;
+      this.isDrawing = false;
+    }
   }
   //   @Watch("sizeX")
   //   sizeXChanged(val: number, oldVal: number) {
@@ -157,7 +260,7 @@ export default class GoLBoard extends Vue {
   //     }
   //   }
 
-  public stepOnce(){
+  public stepOnce() {
     this.stepBoard();
     this.running = false;
     requestAnimationFrame(this.evolve);
@@ -174,42 +277,87 @@ export default class GoLBoard extends Vue {
   //     this.frame--;
   //   }
   // }
-  
-  public toggleRunning(){
+
+  public toggleRunning() {
     this.running = !this.running;
     requestAnimationFrame(this.evolve);
   }
 
-  public evolve (now: number){
+  public evolve(now: number) {
+    const { lastEvolveTime } = this;
 
-    if(this.running)
-    {
+    if (
+      this.running &&
+      (!lastEvolveTime || now - lastEvolveTime >= 500 / this.boardSpeed)
+    ) {
+      this.lastEvolveTime = now;
       this.stepBoard();
+    }
+
+    if (this.running) {
       requestAnimationFrame(this.evolve);
     }
   }
 
-  @Watch("map")
+  @Watch("map", { deep: true })
   mapChanged() {
-    const { ctx, heightDim, widthDim, sizeX, sizeY, map, size } = this;
+    const {
+      ctx,
+      heightDim,
+      widthDim,
+      sizeX,
+      sizeY,
+      map,
+      size,
+      mapHistory,
+    } = this;
+    console.log("map changed!");
     ctx!.clearRect(0, 0, widthDim, heightDim);
     ctx!.fillStyle = "black";
     ctx!.fillRect(0, 0, widthDim, heightDim);
-    ctx!.clearRect(1, 1, widthDim-2, heightDim-2);
+    ctx!.clearRect(
+      this.borderWidth,
+      this.borderWidth,
+      widthDim - this.borderWidth * 2,
+      heightDim - this.borderWidth * 2
+    );
+
+    //trail
+    if (mapHistory.length > 0) {
+      const lastMap = mapHistory[mapHistory.length - 1];
+      for (let row = 0; row < sizeY; row++) {
+        const gridRow = lastMap[row];
+        for (let cell = 0; cell < sizeX; cell++) {
+          if (gridRow[cell]) {
+            ctx!.fillStyle = "rgb(150, 150, 150)";
+            ctx!.fillRect(
+              cell * size + this.borderWidth,
+              row * size + this.borderWidth,
+              size,
+              size
+            );
+          }
+        }
+      }
+    }
+
     for (let row = 0; row < sizeY; row++) {
       const gridRow = map[row];
       for (let cell = 0; cell < sizeX; cell++) {
-        if(gridRow[cell])
-        {
+        if (gridRow[cell]) {
           ctx!.fillStyle = "rgb(255, 255, 255)";
-          ctx!.fillRect(cell * size, row * size, size, size);
+          ctx!.fillRect(
+            cell * size + this.borderWidth,
+            row * size + this.borderWidth,
+            size,
+            size
+          );
         }
       }
     }
   }
-        
-  public setupBoard(heightPar: number, widthPar: number): Array<any[]>
-  {
+
+  public setupBoard(heightPar: number, widthPar: number): Array<any[]> {
     const map2: Array<any[]> = [];
     for (let indexY = 0; indexY < heightPar; indexY++) {
       const newRow = [];
@@ -220,47 +368,40 @@ export default class GoLBoard extends Vue {
       map2.push(newRow);
     }
 
-    return map2
+    return map2;
   }
 
-
   public stepBoard() {
-    
     // for (let index = 0; index < this.entities.length; index++) {
     //   const entity = this.entities[index];
     //   if(this.frame % entity.speed == 0)
     //   {
 
-
     //   }
     // }
 
     const { mapHistory, map } = this;
-
-    
-    if(this.matched == false)
-    {
-      for (let index = 0; index < mapHistory.length; index++) 
-      {
-        const currentMap = mapHistory[index];
-        if (JSON.stringify(currentMap) == JSON.stringify(map)) 
-        {
-          this.matched = true;
+    if (this.autoRandomiseOnMatch) {
+      if (!this.matched) {
+        for (let index = 0; index < mapHistory.length; index++) {
+          const currentMap = mapHistory[index];
+          if (JSON.stringify(currentMap) == JSON.stringify(map)) {
+            this.matched = true;
+          }
         }
+        this.mapHistory.push(this.map);
+      } else if (this.currentPostMatchedFrames < this.postMatchedFrames) {
+        this.currentPostMatchedFrames += 1;
+      } else {
+        this.mapHistory = [];
+        this.map = this.setupBoard(this.sizeY, this.sizeX);
+        this.matched = false;
+        this.currentPostMatchedFrames = 0;
+        this.frame = 0;
       }
-      this.mapHistory.push(this.map)
-    }
-    else if(this.currentPostMatchedFrames < this.postMatchedFrames)
-    {
-      this.currentPostMatchedFrames += 1
-
-    }
-    else
-    {
+    } else {
       this.mapHistory = [];
-      this.map = this.setupBoard(this.sizeY, this.sizeX);
       this.matched = false;
-      this.currentPostMatchedFrames = 0
     }
 
     const map2: Array<any[]> = [];
@@ -270,15 +411,11 @@ export default class GoLBoard extends Vue {
       for (let indexX = 0; indexX < row.length; indexX++) {
         const cell = row[indexX];
         const alive = this.getNumberOfAliveFromXandY(indexY, indexX);
-        if(cell && (alive == 2 || alive == 3))
-        {
+        if (cell && (alive == 2 || alive == 3)) {
           newRow.push(true);
-        }
-        else if(cell == false && alive == 3)
-        {
+        } else if (cell == false && alive == 3) {
           newRow.push(true);
-        }
-        else{
+        } else {
           newRow.push(false);
         }
       }
@@ -290,16 +427,16 @@ export default class GoLBoard extends Vue {
     this.frame++;
   }
 
-  public getPositionFromXandY(y: number, x: number) {
-    let count = y * this.sizeX;
-    count += x;
-    return count;
-  }
-  public getPositionFromCount(count: number): [number, number] {
-    const x = count % this.sizeX;
-    const y = Math.trunc(count / this.sizeX);
-    return [y, x];
-  }
+  // public getPositionFromXandY(y: number, x: number) {
+  //   let count = y * this.sizeX;
+  //   count += x;
+  //   return count;
+  // }
+  // public getPositionFromCount(count: number): [number, number] {
+  //   const x = count % this.sizeX;
+  //   const y = Math.trunc(count / this.sizeX);
+  //   return [y, x];
+  // }
   public getNumberOfAliveFromXandY(y: number, x: number): number {
     const { sizeX, sizeY } = this;
 
@@ -308,45 +445,45 @@ export default class GoLBoard extends Vue {
       for (const yModifier of [-1, 0, 1]) {
         let xModified = x + xModifier;
         let yModified = y + yModifier;
-        
-        if(xModified < 0){
-            xModified += sizeX
+
+        if (xModified < 0) {
+          xModified += sizeX;
+        } else if (xModified == sizeX) {
+          xModified -= sizeX;
         }
-        else if(xModified == sizeX){
-            xModified -= sizeX
+        if (yModified < 0) {
+          yModified += sizeY;
+        } else if (yModified == sizeY) {
+          yModified -= sizeY;
         }
-        if(yModified < 0){
-            yModified += sizeY
-        }
-        else if(yModified == sizeY){
-          yModified -= sizeY
-        }
-        
-        if(!(xModified == x && yModified == y) && this.map[xModified][yModified]){
-          alive += 1
+
+        if (
+          !(xModified == x && yModified == y) &&
+          this.map[yModified][xModified]
+        ) {
+          alive += 1;
         }
       }
     }
     return alive;
   }
-
 }
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .btn.step:after {
-	content: '\f051';
-	font-family: FontAwesome;
-	padding-left: 10px;
+  content: "\f051";
+  font-family: FontAwesome;
+  padding-left: 10px;
 }
 .btn.play:after {
-	content: '\f04b';
-	font-family: FontAwesome;
-	padding-left: 10px;
+  content: "\f04b";
+  font-family: FontAwesome;
+  padding-left: 10px;
 }
 .btn.pause:after {
-	content: '\f04c';
-	font-family: FontAwesome;
-	padding-left: 10px;
+  content: "\f04c";
+  font-family: FontAwesome;
+  padding-left: 10px;
 }
 </style>
