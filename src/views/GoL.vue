@@ -1,6 +1,7 @@
 <template>
-  <div class="home">
-    <GoLBoard :sizeX="50" :sizeY="50" />
+  <div class="container">
+    
+    <GoLBoard />
   </div>
 </template>
 
@@ -16,9 +17,6 @@ export default {
     msg: String,
   },
   methods: {
-    test() {
-      return "hi";
-    },
   },
 };
 </script>

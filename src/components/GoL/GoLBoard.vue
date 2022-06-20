@@ -1,98 +1,50 @@
 <template>
-  <div class="container">
-    <div class="row">
-      <div class="card bg-dark text-white">
-        <div class="card-body">
-          <!-- <div class="col-md-5"></div> -->
-          <!-- <label for="checkbox">{{ running ? "Running" : "Stopped" }}</label>
-          <input type="checkbox" id="checkbox" v-model="running" /> -->
-          <!-- <input type="button" @click="stepBack()" value="<||" /> -->
-          <button type="button" class="btn" @click="stepOnce()">
-            <i class="fa fa-step-forward"></i>
-          </button>
-          <button type="button" class="btn" @click="toggleRunning()">
-            <i :class="running ? 'fa fa-pause' : 'fa fa-play'"></i>
-          </button>
+  <div class="row">
+    <div class="col-md-3 col-xs-12 card bg-dark text-white">
+      <div class="card-body">
+        <!-- <div class="col-md-5"></div> -->
+        <!-- <label for="checkbox">{{ running ? "Running" : "Stopped" }}</label>
+        <input type="checkbox" id="checkbox" v-model="running" /> -->
+        <!-- <input type="button" @click="stepBack()" value="<||" /> -->
+        <button type="button" class="btn" @click="stepOnce()">
+          <i class="fa fa-step-forward"></i>
+        </button>
+        <button type="button" class="btn" @click="toggleRunning()">
+          <i :class="running ? 'fa fa-pause' : 'fa fa-play'"></i>
+        </button>
 
-          <label for="boardSpeed">Speed:</label>
-          <input
-            type="range"
-            id="boardSpeed"
-            class="form-control-range"
-            min="0"
-            max="100"
-            step="1"
-            v-model="boardSpeed"
-          />
+        <label for="boardSpeed">Speed:</label>
+        <input
+          type="range"
+          id="boardSpeed"
+          class="form-control-range"
+          min="0"
+          max="100"
+          step="1"
+          v-model="boardSpeed"
+        />
 
-          <p>Frame: {{ frame }}</p>
-          <label for="autoRandom">Auto Randomise on match:</label>
-          <input
-            type="checkbox"
-            id="autoRandom"
-            v-model="autoRandomiseOnMatch"
-          />
-          <!-- <p>test: {{ test }}</p> -->
-          <!-- <div class="row" :key="index" v-for="(entity, index) in entities">
-              <p>Name: {{ entity.name }}</p>
-              <p>Ate: {{ entity.foodAte }}</p>
-          </div> -->
-          <!-- <form>
-            <div class="form-group">
-              <input type="range" class="form-control-range" min="0" max="100" step="1" v-model="boardSpeed">
-            </div>
-          </form>
-          
-          <p>FPS: {{ fps }}</p> -->
-        </div>
+        <p>Frame: {{ frame }}</p>
+        <label for="autoRandom">Auto Randomise on match:</label>
+        <input
+          type="checkbox"
+          id="autoRandom"
+          v-model="autoRandomiseOnMatch"
+        />
       </div>
+    </div>
 
-      <div class="card bg-dark">
-        <div class="card-body">
-          <!-- <div class="row" v-bind:key="'row' + index" v-for="(row, index) in map">
-          <div
-            class="cell"
-            v-bind:key="'cell' + index"
-            v-for="(cell, index) in row"
-          >
-            <div class="cell-contents" >
-                    </div> -->
-          <!-- <GoLCell v-bind:type=cell.type v-bind:color=cell.color v-bind:name=cell.name /> -->
-          <!-- <component :is="cell"></component>
-            <GoLCell
-              :type="cell.type"
-              :color="cell.color"
-              :name="cell.name"
-              :selected="cell.selected"
-              :height="size"
-              :width="size"
-            />
-          </div>
-        </div> -->
-          <!-- <svg :width=size*sizeX :height=size*sizeY>
-            <g v-for="(row, rowIndex) in map" :key="'row' + rowIndex">
-                <rect
-                    v-for="(cell, cellIndex) in row"
-                    :key="'cell' + cellIndex"
-                    :width=size
-                    :height=size
-                    :fill="'rgb(' + cell.color + ')'"
-                    :x=cellIndex*size
-                    :y=rowIndex*size
-                />
-            </g>
-        </svg> -->
-
-          <canvas
-            ref="canvas"
-            :width="widthDim"
-            :height="heightDim"
-            @mousemove="draw"
-            @mousedown="beginDrawing"
-            @mouseup="stopDrawing"
-            @mouseleave="stopDrawing"
-          />
-        </div>
+    <div class="col-md-9 col-xs-12 card bg-dark">
+      <div ref="canvasBody" class="card-body">
+        <canvas
+          ref="canvas"
+          :width="widthDim"
+          :height="heightDim"
+          @mousemove="draw"
+          @mousedown="beginDrawing"
+          @mouseup="stopDrawing"
+          @mouseleave="stopDrawing"
+        />
       </div>
     </div>
   </div>
@@ -115,11 +67,9 @@ export default class GoLBoard extends Vue {
   private boardSpeed = 5;
   // private fps = 0;
   // private timeBetweenFrames: number[] = [];
-  @Prop() private sizeX!: number;
-  @Prop() private sizeY!: number;
+  private sizeX = 50;
+  private sizeY = 50;
   private borderWidth = 5;
-  private widthDim = this.size * this.sizeX + this.borderWidth * 2;
-  private heightDim = this.size * this.sizeY + this.borderWidth * 2;
   private mapHistory: Array<Array<any[]>> = [];
   private matched = false;
   private currentPostMatchedFrames = 0;
@@ -127,44 +77,54 @@ export default class GoLBoard extends Vue {
   private autoRandomiseOnMatch = true;
   private isDrawing = false;
   private brush = true;
+  
   beforeDestroy() {
     this.evolve = () => {
       //Do nothing
     };
   }
   mounted() {
+    // window.addEventListener('resize', this.getWindowWidth);
     const canvas: any = this.$refs.canvas;
+    const canvasBody: any = this.$refs.canvasBody;
     this.ctx = canvas.getContext("2d");
     this.map = this.setupBoard(this.sizeY, this.sizeX);
-
-    // // Add the event listeners for mousedown, mousemove, and mouseup
-    // this.ctx!.canvas.addEventListener("mousedown", (e) => {
-    //   // x = e.offsetX;
-    //   // y = e.offsetY;
-    //   this.isDrawing = true;
-    // });
-
-    // this.ctx!.canvas.addEventListener("mousemove", (e) => {
-    //   if (this.isDrawing === true) {
-    //     const x = Math.trunc((e.offsetX - this.borderWidth) / this.size);
-    //     const y = Math.trunc((e.offsetY - this.borderWidth) / this.size);
-    //     console.log(x + " - " + y);
-    //     const map2 = this.map;
-    //     map2[y][x] = true;
-    //     this.map = map2;
-    //   }
-    // });
-
-    // window.addEventListener("mouseup", (e) => {
-    //   if (this.isDrawing === true) {
-    //     // drawLine(context, x, y, e.offsetX, e.offsetY);
-    //     // x = 0;
-    //     // y = 0;
-    //     this.isDrawing = false;
-    //   }
-    // });
+    
+    this.$nextTick(function() {
+      window.addEventListener('resize', this.getWindowWidth);
+      this.getWindowWidth()
+    })
 
     requestAnimationFrame(this.evolve);
+  }
+
+  get widthDim() {
+    return this.size * this.sizeX + this.borderWidth * 2;
+  }
+
+  get heightDim() {
+    return this.size * this.sizeY + this.borderWidth * 2;
+  }
+
+  public getWindowWidth() {
+    const canvasBody: any = this.$refs.canvasBody;
+
+    const {
+      width,
+      height
+    } = canvasBody.getBoundingClientRect();
+
+    const newSizeX = Math.trunc((width - this.borderWidth * 2 - 20) / this.size);
+
+    //if map size is changing clear map history as it's not longer relevant
+    if(newSizeX != this.sizeX)
+    {
+      this.mapHistory = [];
+      this.sizeX = newSizeX;
+    }
+
+    //Making Y reactive is a bad idea probably best to have it as a manual setting on the frontend
+    //this.sizeY = Math.trunc((height - this.borderWidth * 2) / this.size);
   }
 
   public makeDeepClone(map: Array<any[]>): Array<any[]> {
@@ -212,53 +172,55 @@ export default class GoLBoard extends Vue {
       this.isDrawing = false;
     }
   }
-  //   @Watch("sizeX")
-  //   sizeXChanged(val: number, oldVal: number) {
-  //     const changeAmount = Math.abs(val - oldVal);
-  //     if (val != oldVal) {
-  //       //expanding
-  //       if (val > oldVal) {
-  //         this.map.forEach(element => {
-  //           for (let index = 0; index < changeAmount; index++) {
-  //             +element.push(null); //push the default box into this
-  //           }
-  //         });
-  //       }
-  //       //compressing
-  //       else {
-  //         this.map.forEach(element => {
-  //           for (let index = 0; index < changeAmount; index++) {
-  //             element.pop();
-  //           }
-  //         });
-  //       }
-  //     }
-  //   }
 
-  //   @Watch("sizeY")
-  //   sizeYChanged(val: number, oldVal: number) {
-  //     const changeAmount = Math.abs(val - oldVal);
-  //     if (val != oldVal) {
-  //       //expanding
-  //       if (val > oldVal) {
-  //         for (let indexY = 0; indexY < changeAmount; indexY++) {
-  //           const i: object[] = [];
-  //           for (let indexX = 0; indexX < this.sizeX; indexX++) {
-  //             i.push(null); //push the default box into this
-  //           }
-  //           this.map.push(i);
-  //         }
-  //       }
-  //       //compressing
-  //       else {
-  //         this.map.forEach(element => {
-  //           for (let index = 0; index < changeAmount; index++) {
-  //             element.pop();
-  //           }
-  //         });
-  //       }
-  //     }
-  //   }
+  @Watch("sizeX")
+  sizeXChanged(val: number, oldVal: number) {
+    console.log(val, oldVal);
+    const changeAmount = Math.abs(val - oldVal);
+    if (val != oldVal) {
+      //expanding
+      if (val > oldVal) {
+        this.map.forEach(element => {
+          for (let index = 0; index < changeAmount; index++) {
+            +element.push(null); //push the default box into this
+          }
+        });
+      }
+      //compressing
+      else {
+        this.map.forEach(element => {
+          for (let index = 0; index < changeAmount; index++) {
+            element.pop();
+          }
+        });
+      }
+    }
+  }
+
+  @Watch("sizeY")
+  sizeYChanged(val: number, oldVal: number) {
+    const changeAmount = Math.abs(val - oldVal);
+    if (val != oldVal) {
+      //expanding
+      if (val > oldVal) {
+        for (let indexY = 0; indexY < changeAmount; indexY++) {
+          const i: any[] = [];
+          for (let indexX = 0; indexX < this.sizeX; indexX++) {
+            i.push(null); //push the default box into this
+          }
+          this.map.push(i);
+        }
+      }
+      //compressing
+      else {
+        this.map.forEach(element => {
+          for (let index = 0; index < changeAmount; index++) {
+            element.pop();
+          }
+        });
+      }
+    }
+  }
 
   public stepOnce() {
     this.stepBoard();
@@ -287,7 +249,7 @@ export default class GoLBoard extends Vue {
     const { lastEvolveTime } = this;
 
     if (
-      this.running &&
+      this.running && !this.isDrawing &&
       (!lastEvolveTime || now - lastEvolveTime >= 500 / this.boardSpeed)
     ) {
       this.lastEvolveTime = now;
@@ -311,7 +273,6 @@ export default class GoLBoard extends Vue {
       size,
       mapHistory,
     } = this;
-    console.log("map changed!");
     ctx!.clearRect(0, 0, widthDim, heightDim);
     ctx!.fillStyle = "black";
     ctx!.fillRect(0, 0, widthDim, heightDim);
@@ -322,7 +283,7 @@ export default class GoLBoard extends Vue {
       heightDim - this.borderWidth * 2
     );
 
-    //trail
+    //trail cells
     if (mapHistory.length > 0) {
       const lastMap = mapHistory[mapHistory.length - 1];
       for (let row = 0; row < sizeY; row++) {
@@ -341,6 +302,7 @@ export default class GoLBoard extends Vue {
       }
     }
 
+    //active cells
     for (let row = 0; row < sizeY; row++) {
       const gridRow = map[row];
       for (let cell = 0; cell < sizeX; cell++) {
@@ -372,14 +334,6 @@ export default class GoLBoard extends Vue {
   }
 
   public stepBoard() {
-    // for (let index = 0; index < this.entities.length; index++) {
-    //   const entity = this.entities[index];
-    //   if(this.frame % entity.speed == 0)
-    //   {
-
-    //   }
-    // }
-
     const { mapHistory, map } = this;
     if (this.autoRandomiseOnMatch) {
       if (!this.matched) {
@@ -402,6 +356,12 @@ export default class GoLBoard extends Vue {
     } else {
       this.mapHistory = [];
       this.matched = false;
+    }
+
+    //Keep mapHistory limited to 500 as it starts causing lag
+    if(this.mapHistory.length >= 500)
+    {
+      this.mapHistory.shift();
     }
 
     const map2: Array<any[]> = [];
