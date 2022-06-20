@@ -1,6 +1,6 @@
 <template>
      <div class="timeline">
-        <div :key="experience" v-for="(experience, index) in Experiences" :class="[index % 2 == 0 ? 'left': 'right', 'TLcontainer']">
+        <div :key="index" v-for="(experience, index) in Experiences" :class="[index % 2 == 0 ? 'left': 'right', 'TLcontainer']">
             <div class="content">
                 <img v-if="experience.Image != null" style="height:80px;" :src="require(`@/assets/${experience.Image}`)" alt="">
                 <h4 v-else>{{ experience.Company }}</h4>
