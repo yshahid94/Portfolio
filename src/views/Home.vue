@@ -1,12 +1,12 @@
 <template>
   <div>
-    <div class="container-fluid" style="position: relative; z-index:2; margin-bottom:100px; background-color:#24252a;">
+    <div class="container-fluid" >
       <div class="intro container">
         <div class="row">
           <div class="col-md-6">
             <div class="profile-pic"></div>
             <!-- <div class="profile-tag">Yassin Shahid</div> -->
-            <div class="" style="text-align:left;">
+            <div class="about">
               <h4>About me</h4>
               My name is Yassin, I'm a {{ age }} year old dev with a computer science degree from MMU
               I currently live in Old Trafford, Manchester.
@@ -27,20 +27,20 @@
           </div>
         </div>
       </div>
-      <div id="Experiences">
-        <div class="exp row">
-          <div class="col-md-12" style="background-color:#343a40;">
+      <div id="Experiences" class="section">
+        <div class="title row">
+          <div class="col-md-12">
             <h2>Experience</h2>
           </div>
         </div>
-        <div class="exps row" style="background-color:#181a1b; box-shadow: inset 0 0 10px #000000;">
+        <div class="body row">
           <div class="col-md-12">
             <Timeline />
           </div>
         </div>
       </div>
     </div>
-    <div style="position: fixed;bottom: 0; z-index:1; width: 100%;">
+    <div class="footer">
       <div>
         <p>
           Contact Me:<br />
@@ -92,11 +92,10 @@ export default class Home extends Vue {
     }
 
     const elementTarget = document.getElementById("Experiences")!;
-    //const elementTarget2 = document.getElementsByClassName("exp")[0]! as HTMLElement;
     if (window.scrollY > (elementTarget.offsetTop)) {
-      app.classList.add("experience")
+      elementTarget.classList.add("active")
     } else {
-      app.classList.remove("experience");
+      elementTarget.classList.remove("active");
     }
   }
 
@@ -114,26 +113,17 @@ export default class Home extends Vue {
   }
 }
 
-.experience .exp {
-  position: fixed;
-  top: 60px;
-  right: 0;
-  left: 0;
-  z-index: 1031;
-  opacity: 0.8;
-  transition: 1s;
+.container-fluid {
+  position: relative;
+  z-index: 2;
+  margin-bottom: 100px;
+  background-color:#24252a;
 }
 
-.exp h2 {
-  margin: 0.5em;
-  transition: 1s;
+.intro .col-md-6 {
+  margin: auto 0;
+  padding: 3em 0;
 }
-
-.experience .exp h2 {
-  margin: 0.25em;
-  transition: 1s;
-}
-
 .profile-tag {
   justify-content: center;
   background-color: rgb(32, 32, 32);
@@ -159,8 +149,41 @@ export default class Home extends Vue {
   transition: 0.6s;
 }
 
-.intro .col-md-6 {
-  margin: auto 0;
-  padding: 3em 0;
+.about {
+  text-align:left;
+}
+
+.section .title {
+  background-color: rgb(52, 58, 64);
+}
+.section .body {
+  background-color:#181a1b;
+  box-shadow: inset 0 0 10px #000000;
+}
+/* Adding for animation */
+.section .title h2 {
+  margin: 0.5em;
+  transition: 1s;
+}
+/* Handling section title on section scroll */
+.active.section .title h2 {
+  margin: 0.25em;
+  transition: 1s;
+}
+.active.section .title {
+  position: fixed;
+  top: 60px;
+  right: 0;
+  left: 0;
+  z-index: 1031;
+  opacity: 0.8;
+  transition: 1s;
+}
+
+.footer {
+  position: fixed;
+  bottom: 0;
+  z-index:1;
+  width: 100%;
 }
 </style>
