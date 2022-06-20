@@ -63,7 +63,7 @@ import moment from "moment";
 })
 export default class Home extends Vue {
 
-  dateOfBirth: moment.Moment = moment([1994, 6, 3]);
+  dateOfBirth: moment.Moment = moment([1994, 5, 3]);
   age: number = moment().diff(this.dateOfBirth, 'years');
 
   skills: string[] = [
