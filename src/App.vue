@@ -21,6 +21,7 @@
                 <router-link class="dropdown-item" to="/projects/gol">GoL</router-link>
                 <router-link class="dropdown-item" to="/projects/ttt">TTT</router-link>
                 <router-link class="dropdown-item" to="/projects/advgol">AdvGoL</router-link>
+                <router-link class="dropdown-item" to="/projects/map">Map</router-link>
               </div>
             </li>
           </ul>
