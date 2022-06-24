@@ -23,18 +23,39 @@
 <script lang="ts">
 
 import { Component, Prop, Vue } from "vue-property-decorator";
+import { Experience } from "@/types/Experience";
 
 @Component
 export default class Timeline extends Vue {
-    private Experiences: object[] = [];
+    Experiences: Experience[] = [];
     
     mounted() {
+        this.Experiences.push({
+            Date: "Feb 2021 – Current",
+            Company: "Verastar",
+            Title: "Senior Application Developer",
+            Image: "verastar-logo-white.png",
+            Message: "When I came back I was placed in the team handling all our new front end solutions which were being written in Vue at that point. I was part of integrating multiple third party APIs into our systems, and became a main contact point between us and those third party companies. I became responible for handling any outages or errors these APIs came across. At this point I've also led the team through multiple projects as an interim team lead when our team lead is on holiday or busy with other work, in these cases I've made sure to see the projects to their completion even if the team lead returned, as I felt it my responsibility to do so.",
+            Skills: [
+                    "Vue",
+                    "C#",
+                    "SQL",
+                    "Javascript",
+                    "Typescript",
+                    "ASP.Net",
+                    "CSS",
+                    "TFS",
+                    "MVC",
+                    "jQuery",
+                    "Bootstrap"
+                    ]
+        });
         this.Experiences.push({
             Date: "Jun 2018 – Feb 2020",
             Company: "Verastar",
             Title: "Senior Application Developer",
             Image: "verastar-logo-white.png",
-            Message: "Climbing further up the chain I now started mentoring any new developers joining my team and any having trouble in other teams, this included showing the ropes to new grads and generally helping new developers ease into the way the company operates and guide them with any queries they might have. I was also the one responsible for leading the team whenever the lead was not available. Being one of the most experienced in terms of business knowledge at this point I became an important contact throughout the whole business. Near the end of my career at Verastar we started to experiment with JavaScript frameworks and I tried my hand at Vue and React.",
+            Message: "I now started mentoring any new developers joining my team and any having trouble in other teams, this included showing the ropes to new grads and generally helping new developers ease into the way the company operates and guide them with any queries they might have. I was also the one responsible for leading the team whenever the lead was not available. Being one of the most experienced in terms of business knowledge at this point I became an important contact throughout the whole business. Near the end of my career at Verastar we started to experiment with JavaScript frameworks and I tried my hand at Vue and React.",
             Skills: [
                     "C#",
                     "SQL",
@@ -54,7 +75,7 @@ export default class Timeline extends Vue {
             Company: "Verastar",
             Title: "Application Developer",
             Image: "verastar-logo-white.png",
-            Message: "During my transition out of graduate application developer I focused on becoming more independent and deepening my domain knowledge. I started focusing on learning how the company operated and how to best align myself to fit into its structure. During this stage the company started to adopt several practices from the Agile methodology including SCRUM events, poker planning and backlogs. I was part of introducing a new ESB product to the company which is used as a middleware for all inhouse products and any external clients.",
+            Message: "During my transition out of graduate application developer I focused on becoming more independent and deepening my domain knowledge. I started on learning how the company operated and how to best align myself to fit into its structure. During this stage the company started to adopt several practices from the Agile methodology including SCRUM events, poker planning and backlogs. I was part of introducing a new ESB product to the company which is used as a middleware for all inhouse products and any external clients.",
             Skills: [
                     "C#",
                     "SQL",

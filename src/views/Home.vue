@@ -8,12 +8,13 @@
             <!-- <div class="profile-tag">Yassin Shahid</div> -->
             <div class="about">
               <h4>About me</h4>
-              My name is Yassin, I'm a {{ age }} year old dev with a computer science degree from MMU
+              My name is Yassin, I'm a {{ age }} year old dev with a computer science degree from MMU.
               I currently live in Old Trafford, Manchester.
               I love gaining knowledge that I can use to solve problems, which has lead me down the
               path of becoming a developer.
               If I'm not infront of the screen you'll find me hiking and biking.
               I took an extended break to do some travelling but my plans were halted with the events of Covid.
+              My previous job took me back in and I've been with them since.
               I am currently looking for a full stack job that will allow me to experience new technologies,
               and expose me to new ways of thinking.
             </div>
@@ -68,6 +69,8 @@ export default class Home extends Vue {
 
   skills: string[] = [
     "C#",
+    "SQL",
+    "Vue",
     "MVC",
     "TFS",
     "Webforms",
@@ -75,8 +78,6 @@ export default class Home extends Vue {
     "Javascript",
     "jQuery",
     "CSS",
-    "Vue",
-    "SQL",
     "Bootstrap"
   ];
   mounted() {
