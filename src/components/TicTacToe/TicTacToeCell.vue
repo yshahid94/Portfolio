@@ -10,8 +10,6 @@
 import { Component, Vue, Prop } from "vue-property-decorator";
 @Component({})
 export default class TicTacToeCell extends Vue {
-  @Prop() height!: number;
-  @Prop() width!: number;
   @Prop() value!: string;
   cellClicked() {
     this.$emit("clickEmit");
@@ -30,7 +28,7 @@ export default class TicTacToeCell extends Vue {
     justify-content: center;
   }
 .cell:before {
-    content:"";
+    content: "";
     padding-top: 100%;
 }
 </style>

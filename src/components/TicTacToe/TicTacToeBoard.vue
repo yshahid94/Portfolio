@@ -1,37 +1,25 @@
 <template>
-  <div class="container">
-    <div class="row">
-      {{ status }}
-    </div>
-    <div class="row">
-      Current player: {{ currentPlayer }}
-    </div>
+  <div class="row">
     
-    <div style="max-width:800px; padding: 0px 100px">
-      <div class="row" v-for="(n, i) in 3" :key=n>
-        <TicTacToeCell v-for="(n, j) in 3"
-        :key=n
-        :value="board[i][j]"
-        :height="height"
-        :width="width"
-        @clickEmit="childClicked(i, j)"/>
-      </div>
-    </div>
-
-    <!-- <div class="row">
-      <div class="board">
-        <div v-for="(n, i) in 3" :key=n>
-          <div v-for="(n, j) in 3" :key=n>
-            <TicTacToeCell 
+    <div class="col-sm-12 card bg-dark text-white">
+      <div class="card-body">
+        <div class="row">
+          {{ status }}
+        </div>
+        <div class="row">
+          Current player: {{ currentPlayer }}
+        </div>
+        
+        <div class="col-sm-12">
+          <div class="row" v-for="(n, i) in 3" :key=n>
+            <TicTacToeCell v-for="(n, j) in 3"
+            :key=n
             :value="board[i][j]"
-            :height="height"
-            :width="width"
             @clickEmit="childClicked(i, j)"/>
           </div>
         </div>
       </div>
-    </div> -->
-
+    </div>
   </div>
 </template>
 
@@ -44,8 +32,12 @@ import TicTacToeCell from "@/components/TicTacToe/TicTacToeCell.vue";
   }
 })
 export default class TicTacToeBoard extends Vue {
+  board = [['', '', ''],
+          ['', '', ''],
+          ['', '', '']];
+  currentPlayer = 'x';
+  status = 'Playing first game';
   childClicked(x: number, y: number) {
-    // console.log("clicked: " + x + " " + y);
     if (this.board[x][y] !== '')
     {
       return;
@@ -76,13 +68,6 @@ export default class TicTacToeBoard extends Vue {
       this.currentPlayer = 'x';
     }
   }
-  board = [['', '', ''],
-          ['', '', ''],
-          ['', '', '']];
-  currentPlayer = 'x';
-  height = 150;
-  width = 150;
-  status = 'Playing first game';
   playerHasTicTacToe(player: string) {
     // Horizontal rows
     for (let i=0; i<3; i++) {

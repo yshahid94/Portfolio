@@ -1,20 +1,18 @@
 <template>
-  <div class="home">
-    <TicTacToeBoard />
+  <div class="container">
+    <div class="row">
+      <div class="offset-lg-3 col-lg-6 offset-md-2 col-md-8 col-sm-12 card bg-dark text-white">
+        <h2>Tic Tac Toe</h2>
+        <p class="text-left">That's it, it's just tic tac toe... </p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="offset-lg-3 col-lg-6 offset-md-2 col-md-8 col-sm-12 card bg-dark text-white">
+        <TicTacToeBoard />
+      </div>
+    </div>
   </div>
 </template>
-
-<!--<script>
-import TicTacToeBoard from "@/components/TicTacToe/TicTacToeBoard.vue";
-
-export default {
-  name: "TicTacToe",
-  components: {
-    TicTacToeBoard
-  }
-};
-</script> -->
-
 
 <script lang="ts">
 import TicTacToeBoard from "@/components/TicTacToe/TicTacToeBoard.vue";
