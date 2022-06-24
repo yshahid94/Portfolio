@@ -1,6 +1,7 @@
 <template>
   <div class="row">
-    <div class="col-md-3 col-xs-12 card bg-dark text-white">
+    
+    <div class="col-md-3 col-sm-12 card bg-dark text-white">
       <div class="card-body">
         <!-- <div class="col-md-5"></div> -->
         <!-- <label for="checkbox">{{ running ? "Running" : "Stopped" }}</label>
@@ -34,7 +35,7 @@
       </div>
     </div>
 
-    <div class="col-md-9 col-xs-12 card bg-dark">
+    <div class="col-md-9 col-sm-12 card bg-dark">
       <div ref="canvasBody" class="card-body">
         <canvas
           ref="canvas"
@@ -60,11 +61,11 @@ export default class GoLBoard extends Vue {
   //private map: Array<object>;
   private map: Array<any[]> = [];
   private size = 10;
-  private running = true;
-  private frame = 0;
+  running = true;
+  frame = 0;
   private ctx?: CanvasRenderingContext2D = undefined;
   private lastEvolveTime = 0;
-  private boardSpeed = 5;
+  boardSpeed = 5;
   // private fps = 0;
   // private timeBetweenFrames: number[] = [];
   private sizeX = 50;
@@ -74,7 +75,7 @@ export default class GoLBoard extends Vue {
   private matched = false;
   private currentPostMatchedFrames = 0;
   private postMatchedFrames = 5;
-  private autoRandomiseOnMatch = true;
+  autoRandomiseOnMatch = true;
   private isDrawing = false;
   private brush = true;
   
@@ -84,16 +85,16 @@ export default class GoLBoard extends Vue {
     };
   }
   mounted() {
-    // window.addEventListener('resize', this.getWindowWidth);
     const canvas: any = this.$refs.canvas;
     const canvasBody: any = this.$refs.canvasBody;
     this.ctx = canvas.getContext("2d");
-    this.map = this.setupBoard(this.sizeY, this.sizeX);
     
     this.$nextTick(function() {
-      window.addEventListener('resize', this.getWindowWidth);
-      this.getWindowWidth()
+      window.addEventListener('resize', this.resizeCanvasBasedOnDimensions);
+      this.resizeCanvasBasedOnDimensions()
     })
+
+    this.map = this.setupBoard(this.sizeY, this.sizeX);
 
     requestAnimationFrame(this.evolve);
   }
@@ -106,7 +107,7 @@ export default class GoLBoard extends Vue {
     return this.size * this.sizeY + this.borderWidth * 2;
   }
 
-  public getWindowWidth() {
+  public resizeCanvasBasedOnDimensions() {
     const canvasBody: any = this.$refs.canvasBody;
 
     const {

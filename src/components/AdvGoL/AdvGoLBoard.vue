@@ -1,6 +1,6 @@
 <template>
-  <div class="container">
-    <div class="card">
+  <div class="row">
+    <div class="col-sm-12 card bg-dark text-white">
       <div class="card-body">
         <div class="row">
           <!-- <label for="checkbox">{{ running ? "Running" : "Stopped" }}</label>
@@ -27,13 +27,13 @@
               step="1"
               v-model="boardSpeed"
             />
-            <p>FPS: {{ fps }}</p>
+            <!-- <p>FPS: {{ fps }}</p> -->
           </div>
         </div>
       </div>
     </div>
 
-    <div class="card">
+    <div class="col-sm-12 card bg-dark text-white">
       <div class="card-body">
         <!-- <div class="row" v-bind:key="'row' + index" v-for="(row, index) in map">
           <div
@@ -92,23 +92,23 @@ import { interval } from "rxjs";
 export default class GoLBoard extends Vue {
   //private map: Array<object>;
   private map: Array<any[]> = [];
-  private size = 20;
+  private size = 10;
   private entities: GoLEntity[] = [];
   private walls: GoLWall[] = [];
   private food: GoLFood[] = [];
-  private running = false;
+  running = false;
   private frame = 0;
   private test = 0;
   private ctx?: CanvasRenderingContext2D = undefined;
   private maxNumberOfFood = 5;
   private lastEvolveTime = 0;
-  private boardSpeed = 60;
+  boardSpeed = 60;
   private fps = 0;
   private timeBetweenFrames: number[] = [];
   @Prop() private sizeX!: number;
   @Prop() private sizeY!: number;
-  private widthDim = this.size * this.sizeX;
-  private heightDim = this.size * this.sizeY;
+  widthDim = this.size * this.sizeX;
+  heightDim = this.size * this.sizeY;
   // private mapHistory: Array<Array<any[]>> = [];
   // private entitiesHistory: Array<GoLEntity[]> = [];
   // private wallsHistory: Array<GoLWall[]> = [];
