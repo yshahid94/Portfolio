@@ -25,11 +25,14 @@
             </li>
           </ul>
           <ul class="nav justify-content-end">
-            <li class="nav-item">
-              <a class="nav-link" href="./Yassin Shahid CV.pdf">CV</a>
-            </li>
+            <!-- <li class="nav-item">
+              <a class="nav-link" href="./YassinShahidCV.pdf">CV</a>
+            </li> -->
             <li class="nav-item">
               <a class="nav-link" href="https://www.linkedin.com/in/yassin-shahid-465298105/"><i class="fab fa-linkedin"></i></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="https://github.com/yshahid94?tab=repositories"><i class="fab fa-github"></i></a>
             </li>
           </ul>
         </div>
